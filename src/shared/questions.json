@@ -1,11 +1,18 @@
-{
-    "title": "",
-    "category": "",
-    "contentent": "",
-    "choices": [
-        {
-            "content": "",
-            "content": "",
-        }
-    ]
-}
+[{
+  "title": "",
+  "category": "",
+  "content": "What is the good answer ?",
+  "choices": [{
+    "content": "A",
+    "isRightAnswer": true
+  }, {
+    "content": "B",
+    "isRightAnswer": false
+  }, {
+    "content": "C",
+    "isRightAnswer": false
+  }, {
+    "content": "D",
+    "isRightAnswer": false
+  }]
+}]
