@@ -1,14 +1,17 @@
-<nav class="p-6 bg-mainPurple text-white"></nav>
-<div
-  class="p-6 mx-8 max-w-100 bg-white rounded-xl shadow-lg space-y-10 flex flex-col items-center justify-center h-screen">
-  <div class="shrink-0 mb-6">
-    <img class="h-200 w-200 rounded-lg" src="assets/images/logo.png" alt="Angular Quizz Logo">
+<nav class="p-6 bg-mainPurple text-white">
+
+</nav>
+<div class="container mx-auto flex justify-items-center">
+  <div class="flex flex-col container justify-items-center items-center shadow-lg">
+    <div class="shrink-0 mb-6 ">
+      <img class="h-400 w-400 rounded-lg" src="assets/images/logo.png" alt="Angular Quizz Logo">
+    </div>
+    <div class="text-md max-w-sm">
+      <p>
+        Testez vos connaissances du framework et voyez où vous vous situez par rapport à d'autres développeurs.
+        Progressez en ayant des détails sur les questions que vous avez faussées.
+      </p>
+    </div>
+    <router-outlet></router-outlet>
   </div>
-  <div class="text-md max-w-sm">
-    <p>
-      Testez vos connaissances du framework et voyez où vous vous situez par rapport à d'autres développeurs.
-      Progressez en ayant des détails sur les questions que vous avez faussées.
-    </p>
-  </div>
-  <router-outlet></router-outlet>
 </div>
