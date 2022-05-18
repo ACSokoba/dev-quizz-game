@@ -28,13 +28,23 @@
     <!-- <div class="shrink-0 mb-6 ">
       <img class="h-400 w-400 rounded-lg" src="assets/images/logo.png" alt="Angular Quizz Logo">
     </div> -->
+    <h1 class="text-5xl">Question {{questionCount}}</h1>
     <div class="text-lg max-w-md my-12 p-2">
-      <p>
-        {{ currentQuestion }}
+      <p class="mb-8">
+        {{ currentQuestion.title }}
+        {{ currentQuestion.content }}
       </p>
+      <ng-container *ngFor="let response of currentQuestion.choices">
+        <div>
+          <button class="rounded-md bg-slate-500 py-2 min-w-full mb-3">
+            {{response.content}}
+          </button>
+        </div>
+      </ng-container>
     </div>
-    <button class="rounded-full p-4 text-2xl font-bold bg-mainBlue my-16  py-2 px-4 hover:bg-mainLightBlue text-white"
-      (click)="start()">C'est
+    <button
+      class="rounded-full p-4 md:text-2xl xs:text-lg font-bold bg-mainBlue my-16  py-2 px-4 hover:bg-mainLightBlue text-white"
+      (click)="nextQuestion()">Prochaine question
       parti !</button>
     <!-- <router-outlet></router-outlet> -->
   </div>

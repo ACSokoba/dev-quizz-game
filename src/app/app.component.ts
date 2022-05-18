@@ -8,11 +8,12 @@ import { Question } from 'src/shared/questions.model';
 })
 export class AppComponent implements OnInit {
   title = 'dev-quizz-game';
-  questions = questionsSource;
+  questions: Question[] = (questionsSource as any).default;
   currentPage: 'home' | 'game' | 'end' = 'home';
   currentQuestion: null | Question;
+  questionCount = 1;
+
   ngOnInit(): void {
-    this.questions = questionsSource;
     console.log('QUESTIONS', this.questions);
   }
 
@@ -23,13 +24,32 @@ export class AppComponent implements OnInit {
     this.currentQuestion = this.getCurrentQuestion();
   }
 
+  nextQuestion() {
+    this.questionCount++;
+    this.currentQuestion = this.getCurrentQuestion();
+  }
+
   getCurrentQuestion(): Question {
-    let randomIndex = Math.floor(Math.random() * this.questions.length - 1);
+    let randomIndex = this.randomIntFromInterval(0, this.questions.length - 1);
     let question: Question = this.questions[randomIndex];
     this.refreshQuestions(randomIndex);
     return question;
   }
+
   refreshQuestions(index: number): void {
+    console.log('before splice', this.questions);
     this.questions.splice(index, 1);
+    if (this.questions.length === 0) {
+      this.endGame();
+    }
+  }
+
+  randomIntFromInterval(min, max) {
+    // min and max included
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  endGame(): void {
+    this.currentPage = "end";
   }
 }
