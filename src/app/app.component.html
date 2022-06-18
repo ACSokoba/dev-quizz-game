@@ -1,55 +1,82 @@
-<nav class="p-6 mb-10 bg-mainPurple text-white">
-
-</nav>
-<div class="container mx-auto flex justify-items-center">
-
-
-
-
-
-  <div *ngIf="currentPage === 'home'" class="flex flex-col container justify-items-center items-center shadow-lg">
-    <div class="shrink-0 mb-6 ">
-      <img class="h-400 w-400 rounded-lg" src="assets/images/logo.png" alt="Angular Quizz Logo">
+<pre class="text-xs">{{ gameState$ | async | json }}</pre>
+<div
+  class="container mx-auto flex justify-items-center items-center min-h-screen"
+>
+  <div
+    *ngIf="(gameState$ | async)?.gameStatus === 'READY'"
+    class="flex flex-col container justify-items-center items-center"
+  >
+    <div class="shrink-0 mb-6 mt">
+      <img
+        class="h-400 w-400 rounded-lg"
+        src="assets/images/logo.png"
+        alt="Angular Quizz Logo"
+      />
     </div>
-    <div class="text-lg max-w-md my-12 p-2">
+    <div class="text-lg text-left max-w-md my-12 p-2">
       <p>
-        Testez vos connaissances du framework et voyez où vous vous situez par rapport à d'autres développeurs.
-        Progressez en ayant des détails sur les questions que vous avez faussées.
+        Testez vos connaissances du framework et voyez où vous vous situez par
+        rapport à d'autres développeurs.
+        <!-- Progressez en ayant des détails sur les questions que vous avez faussées. -->
       </p>
     </div>
-    <button class="rounded-full p-4 text-2xl font-bold bg-mainBlue my-16  py-2 px-4 hover:bg-mainLightBlue text-white"
-      (click)="start()">C'est
-      parti !</button>
-    <!-- <router-outlet></router-outlet> -->
+    <button
+      class="rounded-full p-4 text-2xl font-bold bg-mainBlue my-16 py-2 px-4 hover:bg-mainLightBlue"
+      (click)="startGame()"
+    >
+      C'est parti !
+    </button>
   </div>
 
-
-  <div *ngIf="currentPage === 'game'" class="flex flex-col container justify-items-center items-center shadow-lg">
-    <!-- <div class="shrink-0 mb-6 ">
-      <img class="h-400 w-400 rounded-lg" src="assets/images/logo.png" alt="Angular Quizz Logo">
-    </div> -->
-    <h1 class="text-5xl">Question {{questionCount}}</h1>
+  <div
+    *ngIf="(gameState$ | async)?.gameStatus === 'ONGOING'"
+    class="flex flex-col container justify-items-center items-center"
+  >
+    <h1 class="text-5xl">Question {{ (gameState$ | async).questionNumber }}</h1>
     <div class="text-lg max-w-md my-12 p-2">
       <p class="mb-8">
-        {{ currentQuestion.title }}
-        {{ currentQuestion.content }}
+        {{ (gameState$ | async).currentQuestion.title }} -
+        {{ (gameState$ | async).currentQuestion.content }}
       </p>
-      <ng-container *ngFor="let response of currentQuestion.choices">
+      <ng-container
+        *ngFor="let response of (gameState$ | async).currentQuestion.choices"
+      >
         <div>
-          <button class="rounded-md bg-slate-500 py-2 min-w-full mb-3">
-            {{response.content}}
+          <button
+            class="rounded-md bg-slate-500 py-2 min-w-full mb-3 font-bold"
+          >
+            {{ response.content }}
           </button>
         </div>
       </ng-container>
     </div>
     <button
-      class="rounded-full p-4 md:text-2xl xs:text-lg font-bold bg-mainBlue my-16  py-2 px-4 hover:bg-mainLightBlue text-white"
-      (click)="nextQuestion()">Prochaine question
-      parti !</button>
-    <!-- <router-outlet></router-outlet> -->
+      *ngIf="(gameState$ | async).remainingQuestionsNumber !== 0"
+      class="rounded-full p-4 md:text-2xl xs:text-lg font-bold bg-mainBlue my-16 py-2 px-4 hover:bg-mainLightBlue"
+      (click)="nextQuestion()"
+    >
+      Prochaine question
+    </button>
+    <button
+      *ngIf="(gameState$ | async).remainingQuestionsNumber === 0"
+      class="rounded-full p-4 md:text-2xl xs:text-lg font-bold bg-mainBlue my-16 py-2 px-4 hover:bg-mainLightBlue"
+      (click)="endGame()"
+    >
+      Voir les resultats
+    </button>
   </div>
 
+  <div
+    *ngIf="(gameState$ | async)?.gameStatus === 'OVER'"
+    class="flex flex-col container justify-items-center items-center"
+  >
+    <h1 class="text-5xl">Félicitations</h1>
 
-
-
+    <button
+      class="rounded-full p-4 md:text-2xl xs:text-lg font-bold bg-mainBlue my-16 py-2 px-4 hover:bg-mainLightBlue"
+      (click)="newGame()"
+    >
+      <span> Nouvelle Partie </span>
+    </button>
+  </div>
 </div>

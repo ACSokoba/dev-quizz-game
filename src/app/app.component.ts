@@ -1,55 +1,40 @@
 import { Component, OnInit } from '@angular/core';
-import * as questionsSource from 'src/shared/questions.json';
-import { Question } from 'src/shared/questions.model';
+import * as questionsSource from 'src/shared/questions';
+import { Question } from 'src/models/questions.model';
+import { GameMachineService } from 'src/services/game-machine.service';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
+  constructor(private gameMachineService: GameMachineService) {}
   title = 'dev-quizz-game';
-  questions: Question[] = (questionsSource as any).default;
-  currentPage: 'home' | 'game' | 'end' = 'home';
-  currentQuestion: null | Question;
-  questionCount = 1;
+  gameState$ = this.gameMachineService.getGameStateSubject();
 
-  ngOnInit(): void {
-    console.log('QUESTIONS', this.questions);
-  }
-
-  start() {
-    // enclencher la transition
-    // passer à la premiere question
-    this.currentPage = 'game';
-    this.currentQuestion = this.getCurrentQuestion();
+  ngOnInit() {
+    // this.gameMachineService.newGame();
   }
 
   nextQuestion() {
-    this.questionCount++;
-    this.currentQuestion = this.getCurrentQuestion();
+    console.log('next!');
+    this.gameMachineService.nextQuestion();
   }
 
-  getCurrentQuestion(): Question {
-    let randomIndex = this.randomIntFromInterval(0, this.questions.length - 1);
-    let question: Question = this.questions[randomIndex];
-    this.refreshQuestions(randomIndex);
-    return question;
+  startGame() {
+    this.gameMachineService.nextQuestion();
   }
 
-  refreshQuestions(index: number): void {
-    console.log('before splice', this.questions);
-    this.questions.splice(index, 1);
-    if (this.questions.length === 0) {
-      this.endGame();
-    }
+  seeResults() {
+    this.gameMachineService.endGame();
   }
 
-  randomIntFromInterval(min, max) {
-    // min and max included
-    return Math.floor(Math.random() * (max - min + 1) + min);
+  newGame() {
+    this.gameMachineService.newGame();
   }
 
-  endGame(): void {
-    this.currentPage = "end";
+  endGame() {
+    this.gameMachineService.endGame();
   }
 }
